@@ -6,11 +6,11 @@ import 'package:freecell/functions/other.dart';
 import 'package:freecell/services/end.dart';
 import 'package:freecell/services/floating_home.dart';
 import 'package:freecell/services/hor_home.dart';
-import 'package:freecell/sheet/first_sheet.dart';
 import 'package:freecell/widgets/done.dart';
 import 'package:freecell/widgets/saved.dart';
 import 'package:intl/intl.dart';
 
+import '../first_sheet.dart';
 import 'card_column.dart';
 
 class Home extends StatefulWidget {
@@ -32,9 +32,7 @@ class _HomeState extends State<Home> {
       if (pf['firstBoot']) {
         showModalBottomSheet(
           context: context,
-          builder: (context) {
-            return const SheetFirst();
-          },
+          builder: (context) => const SheetFirst(),
         );
       }
       try {
@@ -68,7 +66,7 @@ class _HomeState extends State<Home> {
 
     return WillPopScope(
       onWillPop: () async {
-        final isExitWarning = DateTime.now().difference(timeBackPressed) >= const Duration(seconds: 3);
+        final isExitWarning = DateTime.now().difference(timeBackPressed) > const Duration(seconds: 3);
         timeBackPressed = DateTime.now();
         return !isExitWarning;
       },

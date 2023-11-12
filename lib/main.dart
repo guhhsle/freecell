@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import 'theme.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

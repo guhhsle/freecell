@@ -5,5 +5,11 @@ class Karta {
   bool highlight, hint;
   GlobalKey key;
 
-  Karta({required this.num, required this.sign, required this.key, required this.highlight, this.hint = false});
+  Karta({
+    required this.num,
+    required this.sign,
+    required this.key,
+    required this.highlight,
+    this.hint = false,
+  });
 }

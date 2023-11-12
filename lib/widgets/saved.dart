@@ -56,7 +56,13 @@ class Saved extends StatelessWidget {
             onDragStarted: () {
               refreshCol(deck[8], [], true);
               List<Karta> l = deck[8].value.toList();
-              l[index] = Karta(num: 0, sign: index, key: GlobalKey(), highlight: true, hint: false);
+              l[index] = Karta(
+                num: 0,
+                sign: index,
+                key: GlobalKey(),
+                highlight: true,
+                hint: false,
+              );
               deck[8].value = l;
             },
             onDraggableCanceled: (velocity, offset) {

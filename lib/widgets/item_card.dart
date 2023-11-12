@@ -45,13 +45,12 @@ class ItemCard extends StatelessWidget {
           ),
           color: karta.sign < 2 && pf['cardBack'] == 'Colorful'
               ? Colors.red.shade200
-              : pf['cardBack'] == 'Colorful'
-                  ? Colors.blueGrey.shade200
-                  : pf['cardBack'] == 'Primary'
-                      ? textColors[pf['theme']]
-                      : pf['cardBack'] == 'Transparent'
-                          ? Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5)
-                          : Colors.white,
+              : {
+                    'Colorful': Colors.blueGrey.shade200,
+                    'Primary': textColors[pf['theme']],
+                    'Transparent': Colors.black.withOpacity(0.5),
+                  }[pf['cardBack']] ??
+                  Colors.white,
         ),
         child: Column(
           children: [
@@ -64,28 +63,20 @@ class ItemCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontFamily: pf['font'],
                     decoration: TextDecoration.none,
-                    color: pf['cardBack'] == 'Transparent'
-                        ? Theme.of(context).colorScheme.primary
-                        : pf['cardBack'] == 'Primary'
-                            ? backgroundColors[pf['theme']]
-                            : Colors.black,
+                    color: {
+                          'Transparent': Theme.of(context).colorScheme.primary,
+                          'Primary': backgroundColors[pf['theme']],
+                        }[pf['cardBack']] ??
+                        Colors.black,
                   ),
                   child: Text(
-                    karta.num == 11
-                        ? 'J'
-                        : karta.num == 12
-                            ? 'Q'
-                            : karta.num == 13
-                                ? 'K'
-                                : karta.num == 1
-                                    ? 'A'
-                                    : karta.num.toString(),
+                    {11: 'J', 12: 'Q', 13: 'K', 1: 'A'}[karta.num] ?? '${karta.num}',
                   ),
                 ),
                 Icon(
                   icons[pf['iconsPref']]![karta.sign],
                   size: p ? w / 28 : h / 28,
-                  color: (karta.sign == 0 || karta.sign == 1) ? Colors.red : Colors.blueGrey.shade800,
+                  color: karta.sign < 2 ? Colors.red : Colors.blueGrey.shade800,
                 )
               ],
             ),
@@ -93,7 +84,7 @@ class ItemCard extends StatelessWidget {
                 ? Expanded(
                     child: Icon(
                       icons[pf['iconsPref']]![karta.sign],
-                      color: (karta.sign == 0 || karta.sign == 1) ? Colors.red : Colors.blueGrey.shade800,
+                      color: karta.sign < 2 ? Colors.red : Colors.blueGrey.shade800,
                       //size: p ? w / 16 : h / 16,
                     ),
                   )

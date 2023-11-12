@@ -152,14 +152,10 @@ Future shuffleCards() async {
 int freeSpace() {
   int fs = 1;
   for (var i = 0; i < 4; i++) {
-    if (deck[8].value[i].num == 0) {
-      fs++;
-    }
+    if (deck[8].value[i].num == 0) fs++;
   }
   for (var i = 0; i < 8; i++) {
-    if (deck[i].value.isEmpty) {
-      fs *= 2;
-    }
+    if (deck[i].value.isEmpty) fs *= 2;
   }
   return fs;
 }

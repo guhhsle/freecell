@@ -53,12 +53,6 @@ void setPref(String pString, var value) {
   } else if (value is String) {
     prefs.setString(pString, value);
   }
-  //SystemChrome.setSystemUIOverlayStyle(
-  //  SystemUiOverlayStyle(
-  //    statusBarColor: darken(textColors[pf['theme']]!),
-  //    systemNavigationBarColor: darken(textColors[pf['theme']]!),
-  //  ),
-  //);
   theme.value = !theme.value;
 }
 

@@ -108,8 +108,12 @@ bool moze(Karta k1, List<Karta> list) {
   bool dalje = true;
   for (var i = list.indexOf(k1); i + 1 < list.length && dalje; i++) {
     if (par(list[i], list[i + 1])) {
-      listArr.add(
-          Karta(num: list[i + 1].num, key: list[i + 1].key, sign: list[i + 1].sign, highlight: list[i + 1].highlight));
+      listArr.add(Karta(
+        num: list[i + 1].num,
+        key: list[i + 1].key,
+        sign: list[i + 1].sign,
+        highlight: list[i + 1].highlight,
+      ));
     } else {
       dalje = false;
     }
@@ -122,8 +126,12 @@ List<Karta> array(Karta k1, List<Karta> list) {
   List<Karta> listArr = [k1];
   for (var i = list.indexOf(k1); i + 1 < list.length && dalje; i++) {
     if (par(list[i], list[i + 1])) {
-      listArr.add(
-          Karta(num: list[i + 1].num, sign: list[i + 1].sign, key: list[i + 1].key, highlight: list[i + 1].highlight));
+      listArr.add(Karta(
+        num: list[i + 1].num,
+        sign: list[i + 1].sign,
+        key: list[i + 1].key,
+        highlight: list[i + 1].highlight,
+      ));
     } else {
       dalje = false;
     }
