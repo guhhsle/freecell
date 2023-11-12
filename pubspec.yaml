@@ -1,0 +1,53 @@
+name: freecell
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.2.0
+
+  intl: ^0.18.1
+  soundpool: ^2.3.0
+  file_picker: ^5.3.2
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: RobotoMono
+      fonts:
+        - asset: fonts/RobotoMono-Regular.ttf
+
+    - family: JetBrainsMono
+      fonts:
+        - asset: fonts/JetBrainsMono-Regular.ttf
+
+    - family: IBMPlexMono
+      fonts:
+        - asset: fonts/IBMPlexMono-Regular.ttf
+
+    - family: Chess
+      fonts:
+        - asset: assets/icons/Chess.ttf
+
+    - family: Suits
+      fonts:
+        - asset: assets/icons/Suits.ttf
+
+  assets:
+    - assets/flick.mp3
+    - assets/winSounds/
+
+flutter_icons:
+  android: true
+  image_path: "assets/icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon.png"
