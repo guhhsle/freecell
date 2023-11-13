@@ -14,7 +14,7 @@ class FloatingHome extends StatelessWidget {
     return ValueListenableBuilder<int>(
       valueListenable: count,
       builder: (context, data, child) {
-        if (isEmpty() || easterEgg) {
+        if (isEmpty() && easterEgg) {
           return SizedBox(
             height: 60,
             width: double.infinity,
@@ -32,7 +32,12 @@ class FloatingHome extends StatelessWidget {
                     setPref('wins', ++pf['wins']);
                     shuffleCards();
                   },
-                  child: Center(child: Text('${art.keys.elementAt(data)} >>')),
+                  child: Center(
+                    child: Text(
+                      '${art.keys.elementAt(data)} >>',
+                      style: TextStyle(color: textColor()),
+                    ),
+                  ),
                 );
               },
             ),
