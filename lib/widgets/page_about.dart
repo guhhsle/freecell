@@ -135,11 +135,7 @@ class PageAbout extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Info',
-          style: TextStyle(
-            color: textColor(context),
-          ),
         ),
-        foregroundColor: textColor(context),
       ),
       body: Stack(
         children: [

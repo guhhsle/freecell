@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../data.dart';
 import 'package:soundpool/soundpool.dart';
@@ -52,14 +51,16 @@ void setPref(String pString, var value) {
     prefs.setBool(pString, value);
   } else if (value is String) {
     prefs.setString(pString, value);
+  } else if (value is List<String>) {
+    prefs.setStringList(pString, value);
   }
   theme.value = !theme.value;
 }
 
-Color textColor(BuildContext context) {
+Color textColor() {
   if (backgroundColors.keys.toList().indexOf(pf['theme']) > 5) {
-    return Theme.of(context).primaryColor;
+    return textColors[pf['theme']]!;
   } else {
-    return Theme.of(context).colorScheme.background;
+    return backgroundColors[pf['theme']]!;
   }
 }

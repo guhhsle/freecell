@@ -46,21 +46,9 @@ class PageCustomState extends State<PageCustom> {
   @override
   Widget build(BuildContext context) {
     final List<VoidCallback> tileFunctions = [
-      () {
-        setState(() {
-          setPref('soundPref', !pf['soundPref']);
-        });
-      },
-      () {
-        setState(() {
-          setPref('haptic', !pf['haptic']);
-        });
-      },
-      () {
-        setState(() {
-          setPref('timer', !pf['timer']);
-        });
-      },
+      () => setState(() => setPref('soundPref', !pf['soundPref'])),
+      () => setState(() => setPref('haptic', !pf['haptic'])),
+      () => setState(() => setPref('timer', !pf['timer'])),
       () async {
         shuffling.value = true;
         setPref('reverse', !pf['reverse']);
@@ -70,31 +58,14 @@ class PageCustomState extends State<PageCustom> {
       },
       () {},
       () {
-        setState(() {
-          if (pf['cardBack'] == 'Colorful') {
-            pf['cardBack'] = 'White';
-          } else if (pf['cardBack'] == 'White') {
-            pf['cardBack'] = 'Transparent';
-          } else if (pf['cardBack'] == 'Transparent') {
-            pf['cardBack'] = 'Primary';
-          } else {
-            pf['cardBack'] = 'Colorful';
-          }
-          setPref('cardBack', pf['cardBack']);
-        });
+        List l = ['Colorful', 'White', 'Transparent', 'Primary'];
+        setPref('cardBack', l[(l.indexOf(pf['cardBack']) + 1) % 4]);
+        setState(() {});
       },
       () {
-        setState(() {
-          if (pf['font'] == 'Roboto') {
-            setPref('font', 'RobotoMono');
-          } else if (pf['font'] == 'RobotoMono') {
-            setPref('font', 'JetBrainsMono');
-          } else if (pf['font'] == 'JetBrainsMono') {
-            setPref('font', 'IBMPlexMono');
-          } else {
-            setPref('font', 'Roboto');
-          }
-        });
+        List l = ['Roboto', 'RobotoMono', 'JetBrainsMono', 'IBMPlexMono'];
+        setPref('font', l[(l.indexOf(pf['font']) + 1) % 4]);
+        setState(() {});
       },
     ];
     final List<Widget> tileTitle = [
@@ -129,51 +100,16 @@ class PageCustomState extends State<PageCustom> {
       const Text('Card back'),
       const Text('Font'),
     ];
+    List<String> options = ['soundPref', 'haptic', 'timer', 'reverse'];
     List<Widget?> tileTrailing = [
-      Switch(
-        activeColor: Theme.of(context).primaryColor,
-        inactiveThumbColor: Theme.of(context).primaryColor,
-        inactiveTrackColor: Colors.grey,
-        value: pf['soundPref'],
-        onChanged: (value2) {
-          setState(() {
-            setPref('soundPref', value2);
-          });
-        },
-      ),
-      Switch(
-        activeColor: Theme.of(context).primaryColor,
-        inactiveThumbColor: Theme.of(context).primaryColor,
-        inactiveTrackColor: Colors.grey,
-        value: pf['haptic'],
-        onChanged: (value2) {
-          setState(() {
-            setPref('haptic', value2);
-          });
-        },
-      ),
-      Switch(
-        activeColor: Theme.of(context).primaryColor,
-        inactiveThumbColor: Theme.of(context).primaryColor,
-        inactiveTrackColor: Colors.grey,
-        value: pf['timer'],
-        onChanged: (value2) {
-          setState(() {
-            setPref('timer', value2);
-          });
-        },
-      ),
-      Switch(
-        activeColor: Theme.of(context).primaryColor,
-        inactiveThumbColor: Theme.of(context).primaryColor,
-        inactiveTrackColor: Colors.grey,
-        value: pf['reverse'],
-        onChanged: (value2) {
-          setState(() {
-            setPref('reverse', value2);
-          });
-        },
-      ),
+      for (var option in options)
+        Switch(
+          activeColor: Theme.of(context).primaryColor,
+          inactiveThumbColor: Theme.of(context).primaryColor,
+          inactiveTrackColor: Colors.grey,
+          value: pf[option],
+          onChanged: (value2) => setState(() => setPref(option, value2)),
+        ),
       null,
       Text(pf['cardBack']),
       Text(pf['font'])
@@ -181,7 +117,6 @@ class PageCustomState extends State<PageCustom> {
 
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: textColor(context),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -189,26 +124,14 @@ class PageCustomState extends State<PageCustom> {
               child: InkWell(
                 child: Text(
                   '${pf['coins']}c',
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
+                  style: const TextStyle(fontSize: 20),
                 ),
-                onTap: () {
-                  setState(() {
-                    pf['coins'] += 50;
-                    prefs.setInt('coins', pf['coins']);
-                  });
-                },
+                onTap: () => setState(() => setPref('coins', pf['coins'] + 50)),
               ),
             ),
           )
         ],
-        title: Text(
-          'Customise',
-          style: TextStyle(
-            color: textColor(context),
-          ),
-        ),
+        title: const Text('Customise'),
       ),
       body: Stack(
         children: [
@@ -247,26 +170,17 @@ class PageCustomState extends State<PageCustom> {
                       padding: const EdgeInsets.all(16),
                       child: Row(
                         children: [
-                          ItemCard(
-                            karta: Karta(num: 1, sign: 0, key: GlobalKey(), highlight: true),
-                            pg: false,
-                            pd: false,
-                          ),
-                          ItemCard(
-                            karta: Karta(num: 1, sign: 1, key: GlobalKey(), highlight: true),
-                            pg: false,
-                            pd: false,
-                          ),
-                          ItemCard(
-                            karta: Karta(num: 1, sign: 2, key: GlobalKey(), highlight: true),
-                            pg: false,
-                            pd: false,
-                          ),
-                          ItemCard(
-                            karta: Karta(num: 1, sign: 3, key: GlobalKey(), highlight: true),
-                            pg: false,
-                            pd: false,
-                          ),
+                          for (int i = 0; i < 4; i++)
+                            ItemCard(
+                              karta: Karta(
+                                num: 1,
+                                sign: i,
+                                key: GlobalKey(),
+                                highlight: true,
+                              ),
+                              pg: false,
+                              pd: false,
+                            ),
                         ],
                       ),
                     ),
@@ -302,11 +216,7 @@ class PageCustomState extends State<PageCustom> {
                           ),
                         ],
                       ),
-                      onTap: () {
-                        setState(() {
-                          showIcons = !showIcons;
-                        });
-                      },
+                      onTap: () => setState(() => showIcons = !showIcons),
                       margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
                       child: Icon(
                         showIcons ? Icons.expand_less_rounded : Icons.expand_more_rounded,
@@ -353,19 +263,15 @@ class PageCustomState extends State<PageCustom> {
                                     color: Theme.of(context).colorScheme.background,
                                   ),
                                   onTap: () {
-                                    if (done) {
-                                      setState(() {
-                                        setPref('iconsPref', icons.keys.elementAt(index));
-                                      });
-                                    } else if (pf['coins'] >= 200) {
-                                      setState(() {
-                                        pf['coins'] -= 200;
-                                        prefs.setInt('coins', pf['coins']);
-                                        pf['collected'].add(icons.keys.elementAt(index));
-                                        prefs.setStringList('collected', pf['collected']);
-                                        setPref('iconsPref', icons.keys.elementAt(index));
-                                      });
+                                    if (!done && pf['coins'] >= 200) {
+                                      setPref('coins', pf['coins'] - 200);
+                                      setPref(
+                                        'collected',
+                                        pf['collected']..add(icons.keys.elementAt(index)),
+                                      );
                                     }
+                                    setPref('iconsPref', icons.keys.elementAt(index));
+                                    setState(() {});
                                   },
                                 );
                               },
@@ -388,11 +294,7 @@ class PageCustomState extends State<PageCustom> {
                         customBorder: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        onTap: () {
-                          setState(() {
-                            showThemes = !showThemes;
-                          });
-                        },
+                        onTap: () => setState(() => showThemes = !showThemes),
                         child: Container(
                           padding: const EdgeInsets.only(left: 16, right: 16),
                           width: double.infinity,
@@ -410,8 +312,10 @@ class PageCustomState extends State<PageCustom> {
                               Expanded(
                                 child: Align(
                                   alignment: Alignment.centerRight,
-                                  child: Icon(showThemes ? Icons.expand_less_rounded : Icons.expand_more_rounded,
-                                      color: Theme.of(context).primaryColor),
+                                  child: Icon(
+                                    showThemes ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ),
                             ],
@@ -438,19 +342,15 @@ class PageCustomState extends State<PageCustom> {
                                   ),
                                   child: InkWell(
                                     onTap: () {
-                                      if (done) {
-                                        setState(() {
-                                          setPref('theme', backgroundColors.keys.elementAt(index));
-                                        });
-                                      } else if (pf['coins'] >= 150) {
-                                        setState(() {
-                                          pf['coins'] -= 150;
-                                          prefs.setInt('coins', pf['coins']);
-                                          pf['collected'].add(backgroundColors.keys.elementAt(index));
-                                          prefs.setStringList('collected', pf['collected']);
-                                          setPref('theme', backgroundColors.keys.elementAt(index));
-                                        });
+                                      if (!done && pf['coins'] >= 150) {
+                                        setPref('coins', pf['coins'] - 150);
+                                        setPref(
+                                          'collected',
+                                          pf['collected']..add(backgroundColors.keys.elementAt(index)),
+                                        );
                                       }
+                                      setPref('theme', backgroundColors.keys.elementAt(index));
+                                      setState(() {});
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.only(
@@ -496,7 +396,10 @@ class PageCustomState extends State<PageCustom> {
                                           Expanded(
                                             child: Align(
                                               alignment: Alignment.centerRight,
-                                              child: Icon(iconsTheme[index], color: textColors.values.elementAt(index)),
+                                              child: Icon(
+                                                iconsTheme[index],
+                                                color: textColors.values.elementAt(index),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -536,11 +439,10 @@ class PageCustomState extends State<PageCustom> {
                               });
                             }
                           } else {
-                            setState(() {
-                              pf['back'] = '';
-                              prefs.setString('back', '');
-                              back = null;
-                            });
+                            pf['back'] = '';
+                            prefs.setString('back', '');
+                            back = null;
+                            setState(() {});
                           }
                           shuffling.value = true;
                           shuffling.value = false;
@@ -561,9 +463,7 @@ class PageCustomState extends State<PageCustom> {
                                     padding: EdgeInsets.only(left: 16),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'Choose image / gif',
-                                      ),
+                                      child: Text('Choose image / gif'),
                                     ),
                                   ),
                           ),
@@ -597,8 +497,13 @@ class CustomCard extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final void Function() onTap;
 
-  const CustomCard({Key? key, required this.title, required this.child, required this.onTap, required this.margin})
-      : super(key: key);
+  const CustomCard({
+    Key? key,
+    required this.title,
+    required this.child,
+    required this.onTap,
+    required this.margin,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

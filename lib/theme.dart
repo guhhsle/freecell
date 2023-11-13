@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freecell/functions/other.dart';
 
 import 'data.dart';
 
@@ -30,11 +31,11 @@ ThemeData themeData({
     dialogBackgroundColor: bc,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.black,
-      foregroundColor: bc,
+      foregroundColor: textColor(),
       shadowColor: Colors.transparent,
       titleTextStyle: TextStyle(
         fontWeight: FontWeight.bold,
-        color: bc,
+        color: textColor(),
         fontFamily: pf['font'],
         fontSize: 20,
       ),

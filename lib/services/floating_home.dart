@@ -14,121 +14,95 @@ class FloatingHome extends StatelessWidget {
     return ValueListenableBuilder<int>(
       valueListenable: count,
       builder: (context, data, child) {
-        return Container(
-          height: 60,
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: !(isEmpty() && easterEgg)
-              ? Stack(
+        if (isEmpty() || easterEgg) {
+          return SizedBox(
+            height: 60,
+            width: double.infinity,
+            child: ValueListenableBuilder<int>(
+              valueListenable: artInt,
+              builder: (context, data, child) {
+                return InkWell(
+                  onTap: () {
+                    setPref('coins', pf['coins'] + 20);
+                    prefs.setInt('count', -1);
+                    if (!pf['easterEggs'].contains(art.keys.elementAt(data))) {
+                      pf['easterEggs'].add(art.keys.elementAt(data));
+                      prefs.setStringList('easterEggs', pf['easterEggs']);
+                    }
+                    setPref('wins', ++pf['wins']);
+                    shuffleCards();
+                  },
+                  child: Center(child: Text('${art.keys.elementAt(data)} >>')),
+                );
+              },
+            ),
+          );
+        }
+        return Theme(
+          data: Theme.of(context).copyWith(iconTheme: IconThemeData(color: textColor())),
+          child: Container(
+            height: 60,
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Stack(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                            tooltip: 'Menu',
-                            icon: Icon(Icons.menu, size: 24, color: textColor(context)),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const PageCustom(),
-                                ),
-                              );
-                            }),
-                        end() && data > 0
+                    IconButton(
+                      tooltip: 'Menu',
+                      icon: const Icon(Icons.menu),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PageCustom(),
+                          ),
+                        );
+                      },
+                    ),
+                    end() && data > 0
+                        ? const IconButton(
+                            tooltip: 'Autosolve',
+                            icon: Icon(Icons.auto_awesome),
+                            onPressed: autoSolve,
+                          )
+                        : data > 0
                             ? IconButton(
-                                tooltip: 'Autosolve',
-                                icon: Icon(
-                                  Icons.auto_awesome,
-                                  color: textColor(context),
-                                  size: 24,
-                                ),
+                                tooltip: 'Hint',
+                                icon: const Icon(Icons.lightbulb_outline_rounded),
                                 onPressed: () {
-                                  autoSolve();
+                                  if (!animating) hint(context);
                                 },
-                              )
-                            : data > 0
-                                ? IconButton(
-                                    tooltip: 'Hint',
-                                    icon: Icon(
-                                      Icons.lightbulb_outline_rounded,
-                                      color: textColor(context),
-                                      size: 24,
-                                    ),
-                                    onPressed: () {
-                                      if (!animating) {
-                                        hint(context);
-                                      }
-                                    },
-                                  )
-                                : Container(),
-                        Expanded(child: Container()),
-                        data > 0
-                            ? InkWell(
-                                onLongPress: () {
-                                  restart();
-                                },
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.undo_rounded,
-                                    color: textColor(context),
-                                    size: 24,
-                                  ),
-                                  onPressed: () {
-                                    undo();
-                                  },
-                                ),
                               )
                             : Container(),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 48),
-                      child: AnimatedAlign(
-                        curve: Curves.easeOutQuad,
-                        duration: const Duration(milliseconds: 128),
-                        alignment: data > 0 ? Alignment.centerRight : Alignment.center,
-                        child: IconButton(
-                          tooltip: 'New',
-                          icon: Icon(
-                            Icons.add,
-                            color: textColor(context),
-                            size: 24,
-                          ),
-                          onPressed: () {
-                            shuffleCards();
-                          },
-                        ),
-                      ),
-                    ),
+                    Expanded(child: Container()),
+                    data > 0
+                        ? const InkWell(
+                            onLongPress: restart,
+                            child: IconButton(
+                              icon: Icon(Icons.undo_rounded),
+                              onPressed: undo,
+                            ),
+                          )
+                        : Container(),
                   ],
-                )
-              : ValueListenableBuilder<int>(
-                  valueListenable: artInt,
-                  builder: (context, data, child) {
-                    return InkWell(
-                      onTap: () {
-                        pf['coins'] += 20;
-                        prefs.setInt('coins', pf['coins']);
-                        prefs.setInt('count', -1);
-                        if (!pf['easterEggs'].contains(art.keys.elementAt(data))) {
-                          pf['easterEggs'].add(art.keys.elementAt(data));
-                          prefs.setStringList('easterEggs', pf['easterEggs']);
-                        }
-                        setPref('wins', ++pf['wins']);
-                        shuffleCards();
-                      },
-                      child: Center(
-                        child: Text(
-                          '${art.keys.elementAt(data)} >>',
-                          style: TextStyle(
-                            color: textColor(context),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 48),
+                  child: AnimatedAlign(
+                    curve: Curves.easeOutQuad,
+                    duration: const Duration(milliseconds: 128),
+                    alignment: data > 0 ? Alignment.centerRight : Alignment.center,
+                    child: const IconButton(
+                      tooltip: 'New',
+                      icon: Icon(Icons.add),
+                      onPressed: shuffleCards,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

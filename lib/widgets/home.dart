@@ -5,7 +5,6 @@ import 'package:freecell/functions/deck.dart';
 import 'package:freecell/functions/other.dart';
 import 'package:freecell/services/end.dart';
 import 'package:freecell/services/floating_home.dart';
-import 'package:freecell/services/hor_home.dart';
 import 'package:freecell/widgets/done.dart';
 import 'package:freecell/widgets/saved.dart';
 import 'package:intl/intl.dart';
@@ -96,10 +95,7 @@ class _HomeState extends State<Home> {
                                   builder: (context, data, widget) {
                                     return Text(
                                       '$data',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: textColor(context),
-                                      ),
+                                      style: TextStyle(fontSize: 20, color: textColor()),
                                     );
                                   },
                                 ),
@@ -122,11 +118,7 @@ class _HomeState extends State<Home> {
                                                   ),
                                                 ),
                                               ),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: textColor(context),
-                                                fontSize: 20,
-                                              ),
+                                              style: TextStyle(fontSize: 20, color: textColor()),
                                             ),
                                           );
                                         },
@@ -149,17 +141,16 @@ class _HomeState extends State<Home> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                        color: Colors.black,
-                        width: !p ? 80 : 0,
-                        height: double.infinity,
-                        child: Row(
-                          children: [
-                            const VerticalHome(),
-                            Container(
-                              width: 20,
-                            )
-                          ],
-                        )),
+                      color: Colors.black,
+                      width: !p ? 80 : 0,
+                      height: double.infinity,
+                      child: Row(
+                        children: [
+                          const RotatedBox(quarterTurns: 1, child: FloatingHome()),
+                          Container(width: 20),
+                        ],
+                      ),
+                    ),
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -223,16 +214,13 @@ class _HomeState extends State<Home> {
                                               ],
                                             )
                                           : Container(),
-                                      SizedBox(
-                                        height: pf['reverse'] ? 0 : 12,
-                                      ),
+                                      SizedBox(height: pf['reverse'] ? 0 : 12),
                                       pf['reverse']
                                           ? Expanded(
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  setState(() {
-                                                    toolbar = !toolbar;
-                                                  });
+                                                  toolbar = !toolbar;
+                                                  setState(() {});
                                                 },
                                               ),
                                             )
@@ -241,13 +229,8 @@ class _HomeState extends State<Home> {
                                         children: [
                                           ValueListenableBuilder(
                                             valueListenable: endScreen,
-                                            builder: (context, value, child) {
-                                              if (isEmpty()) {
-                                                return const EndScreen();
-                                              } else {
-                                                return Container();
-                                              }
-                                            },
+                                            builder: (context, value, child) =>
+                                                isEmpty() ? const EndScreen() : Container(),
                                           ),
                                           Row(
                                             crossAxisAlignment:
@@ -269,9 +252,8 @@ class _HomeState extends State<Home> {
                                           ? Expanded(
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  setState(() {
-                                                    toolbar = !toolbar;
-                                                  });
+                                                  toolbar = !toolbar;
+                                                  setState(() {});
                                                 },
                                               ),
                                             )
@@ -293,9 +275,7 @@ class _HomeState extends State<Home> {
                                               ],
                                             )
                                           : Container(),
-                                      SizedBox(
-                                        height: pf['reverse'] ? 12 : 0,
-                                      ),
+                                      SizedBox(height: pf['reverse'] ? 12 : 0),
                                     ],
                                   )
                                 : Row(
@@ -312,9 +292,7 @@ class _HomeState extends State<Home> {
                                               Saved(index: 3),
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
+                                          SizedBox(height: 8),
                                           Row(children: [
                                             Done(index: 0),
                                             Done(index: 1),
