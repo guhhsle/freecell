@@ -9,7 +9,7 @@ bool gameOver = false;
 bool isEmpty() {
   bool kings = true;
   for (var i = 0; i < 4; i++) {
-    if (deck[9].value[i].num != 1) {
+    if (deck[9].value[i].num != 13) {
       kings = false;
     }
   }
@@ -117,7 +117,7 @@ Future shuffleCards() async {
   }
 
   dt = DateTime.now();
-  for (var n = 1; n > 0; n--) {
+  for (var n = 13; n > 0; n--) {
     for (var s = 0; s < 4; s++) {
       allCards.add(Karta(num: n, sign: s, highlight: true, key: GlobalKey()));
     }
